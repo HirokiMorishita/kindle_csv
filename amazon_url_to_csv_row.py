@@ -37,8 +37,11 @@ def get_book_info(asin):
     book_info_json = json.loads(response.read().decode("utf-8"))
     book_info["title"] = book_info_json[0]["onix"]["DescriptiveDetail"]["TitleDetail"]["TitleElement"]["TitleText"]["content"]
     book_info["authors"] = ";".join(map(lambda author: author["PersonName"]["content"],book_info_json[0]["onix"]["DescriptiveDetail"]["Contributor"])) 
-    book_info["publishers"] = book_info_json[0]["onix"]["PublishingDetail"]["Publisher"]["PublisherName"]
-    book_info["publication_date"] = datetime.strptime(book_info_json[0]["onix"]["PublishingDetail"]["PublishingDate"][0]["Date"], "%Y%m%d").strftime("%Y/%m/%d")
+    book_info["publishers"] = book_info_json[0]["onix"]["PublishingDetail"]["Imprint"]["ImprintName"]
+    try: 
+      book_info["publication_date"] = datetime.strptime(book_info_json[0]["onix"]["PublishingDetail"]["PublishingDate"][0]["Date"], "%Y%m%d").strftime("%Y/%m/%d")
+    except ValueError:
+      book_info["publication_date"] = ""
   return book_info
 
 def parse_asin(url):
