@@ -45,7 +45,7 @@ def get_book_info(asin):
   return book_info
 
 def parse_asin(url):
-  matched = re.search('/([0-9]+)/', url)
+  matched = re.search('/([0-9]+X?)/', url)
   if not matched :
     print("failed. may be url for kindle or not amazon url")
   return matched.group(1)
