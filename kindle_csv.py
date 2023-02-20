@@ -3,6 +3,7 @@
 import xml.etree.ElementTree as ET
 import csv
 import datetime
+import re
 
 # windows
 # ~/AppData/Local/Amazon/Kindle/Cache/KindleSyncMetadataCache.xml
@@ -38,11 +39,11 @@ converted_books = list(
                 f"https://images-na.ssl-images-amazon.com/images/P/{book['ASIN']}.09.LZZZZZZZ.jpg",
             "publication_date":
                 datetime.datetime.fromisoformat(
-                    book["publication_date"]
+                    re.sub("\+([0-9]{2})([0-9]{2})$",r"+\1:\2",book["publication_date"]) 
                 ).strftime("%Y/%m/%d") if book["publication_date"] else "",
             "purchase_date":
                 datetime.datetime.fromisoformat(
-                    book["purchase_date"]
+                    re.sub("\+([0-9]{2})([0-9]{2})$",r"+\1:\2",book["purchase_date"]) 
                 ).strftime("%Y/%m/%d") if book["purchase_date"] else "",
         },
         books
